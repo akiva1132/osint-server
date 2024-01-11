@@ -26,8 +26,10 @@ const cors_1 = __importDefault(require("cors"));
 // import { getMessageFromKafka, kafka } from "./configurations/kafka";
 // import { connectToMongo } from "./configurations/mongo";
 const dotenv_1 = __importDefault(require("dotenv"));
-const kafka_1 = require("./configuration/kafka");
+const kafka_getData_1 = require("./kafka_getData");
 const mongo_1 = require("./configuration/mongo");
+const redis_1 = require("./configuration/redis");
+const reductionPriority_1 = require("./reductionPriority");
 dotenv_1.default.config();
 // export const consumer = kafka.consumer({ groupId: "my-group" });
 const PORT = process.env.PORT || 4000;
@@ -65,10 +67,10 @@ function startServer() {
         app.use((0, cors_1.default)());
         app.use("/graphql", express_1.default.json(), (0, cors_1.default)(), (0, express4_1.expressMiddleware)(apolloServer));
         httpServer.listen(PORT, () => __awaiter(this, void 0, void 0, function* () {
-            // connectPostGres()
+            yield redis_1.client.connect();
             yield (0, mongo_1.connectToMongo)();
-            (0, kafka_1.getMessageFromKafka)(["news"]);
-            // updatePriority("659fe1b561cf389893b2852a", 5)
+            (0, kafka_getData_1.getMessageFromKafka)(["news"]);
+            (0, reductionPriority_1.reductionPriority)();
             console.log(`server is listening on port ${PORT}`);
         }));
     });

@@ -26,18 +26,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ItemModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const ItemSchema = new mongoose_1.Schema({
-    data: {
-        title: { type: String, required: true },
-        link: { type: String, required: true },
-        snippet: { type: String, required: true },
-        date: { type: String, required: true },
-        source: { type: String, required: true },
-        imageUrl: { type: String, required: true },
-        priority: { type: Number, required: true },
-        location: {
-            name: { type: String, required: false },
-            coordinates: { type: Array, required: false }
-        }
+    title: { type: String, required: true },
+    link: { type: String, required: true },
+    snippet: { type: String, required: true },
+    date: { type: String, required: true },
+    source: { type: String, required: true },
+    imageUrl: { type: String, required: true },
+    priority: { type: Number, required: true },
+    location: {
+        name: { type: String, required: false },
+        coordinates: { type: Array, required: false }
     },
     topic: { type: String, required: true }
 });

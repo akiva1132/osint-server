@@ -9,46 +9,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.locationAi = exports.redis = exports.saveData = void 0;
+exports.saveData = void 0;
 const dal_1 = require("./dal");
 const geminiApi_1 = require("./geminiApi");
 const geocodingApi_1 = require("./geocodingApi");
+const insertRedis_1 = require("./insertRedis");
 const delay = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 };
 const saveData = (newsItems) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     for (const newsItem of newsItems) {
-        if (typeof newsItem.data === 'string') {
+        if (newsItem.data) {
             continue;
         }
         yield delay(1200);
-        const address = yield (0, geminiApi_1.getAddress)(newsItem.data.title);
+        const address = yield (0, geminiApi_1.getAddress)(newsItem.title);
         const Coordinates = yield (0, geocodingApi_1.getCoordinates)(address);
-        newsItem.data.location = Coordinates;
-        newsItem.data.priority = 1;
-        const isExsist = yield (0, dal_1.getFromDB)(newsItem.topic);
+        newsItem.location = Coordinates;
+        newsItem.priority = 1;
+        const isExsist = yield (0, dal_1.getFromDB)(newsItem.link);
         if (isExsist) {
-            if (((_a = isExsist.data) === null || _a === void 0 ? void 0 : _a.priority) !== undefined)
-                yield (0, dal_1.updatePriority)(isExsist._id.toString(), isExsist.data);
+            yield (0, dal_1.updatePriority)(isExsist._id.toString(), isExsist.priority + 1);
         }
         else {
             yield (0, dal_1.saveInDB)(newsItem);
         }
-        // console.log(newsItem);
     }
+    (0, insertRedis_1.updateRedis)();
 });
 exports.saveData = saveData;
-// const locationUpdate = async (details: Details) => {
-//     if (typeof details !== 'string') {
-//         const Coordinates = await getCoordinates(address)
-//         details.location = Coordinates
-//         return details
-//     }
-// }
-const redis = (newsItem) => {
-};
-exports.redis = redis;
-const locationAi = () => {
-};
-exports.locationAi = locationAi;

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePriority = exports.getFromDB = exports.saveInDB = void 0;
+exports.reductionPriorityInDB = exports.updatePriority = exports.getItemsWithPriorityGreaterThanZero = exports.getFromDB = exports.saveInDB = void 0;
 const mongo_1 = require("./types/mongo");
 const saveInDB = (newsItem) => __awaiter(void 0, void 0, void 0, function* () {
     const newItem = new mongo_1.ItemModel(newsItem);
@@ -23,9 +23,9 @@ const saveInDB = (newsItem) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.saveInDB = saveInDB;
-const getFromDB = (topic) => __awaiter(void 0, void 0, void 0, function* () {
+const getFromDB = (link) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield mongo_1.ItemModel.find({ topic: topic });
+        const result = yield mongo_1.ItemModel.find({ link: link });
         if (result[0] !== undefined) {
             console.log(result);
             return result[0];
@@ -40,13 +40,22 @@ const getFromDB = (topic) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getFromDB = getFromDB;
-//Type any should be treated
-const updatePriority = (itemId, details) => __awaiter(void 0, void 0, void 0, function* () {
+const getItemsWithPriorityGreaterThanZero = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        details.priority += 1;
-        const update = { $set: { data: details } };
+        const result = yield mongo_1.ItemModel.find({ priority: { $gt: 0 } });
+        return result;
+    }
+    catch (err) {
+        console.error(err);
+        throw err;
+    }
+});
+exports.getItemsWithPriorityGreaterThanZero = getItemsWithPriorityGreaterThanZero;
+//Type any should be treated
+const updatePriority = (itemId, inceryBy) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const update = { $set: { priority: inceryBy } };
         const item = yield mongo_1.ItemModel.updateOne({ _id: itemId }, update);
-        console.log("nn" + item);
         return item;
     }
     catch (err) {
@@ -55,3 +64,15 @@ const updatePriority = (itemId, details) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.updatePriority = updatePriority;
+const reductionPriorityInDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const update = { $inc: { priority: -30 } };
+        const item = yield mongo_1.ItemModel.updateMany(update);
+        return item;
+    }
+    catch (err) {
+        console.error(err);
+        throw err;
+    }
+});
+exports.reductionPriorityInDB = reductionPriorityInDB;

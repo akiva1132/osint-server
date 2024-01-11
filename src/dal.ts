@@ -1,5 +1,5 @@
 import { ItemModel } from "./types/mongo";
-import { Details, DetailsFromDB, NewsItem } from "./types/types";
+import { NewsItem } from "./types/types";
 
 export const saveInDB = async (newsItem: NewsItem) => {
     const newItem = new ItemModel(newsItem);
@@ -12,32 +12,50 @@ export const saveInDB = async (newsItem: NewsItem) => {
     }
 }
 
-export const getFromDB = async (topic: string) => {
+export const getFromDB = async (link: string) => {
     try {
-        const result = await ItemModel.find({ topic: topic })
+        const result = await ItemModel.find({ link: link })
         if (result[0] !== undefined) {
             console.log(result);
-
             return result[0]
         }
         else {
             return false;
-
         }
     } catch (err) {
         console.error(err);
         throw err;
     }
 }
-//Type any should be treated
-export const updatePriority = async (itemId: string, details: any) => {
-    try {
-        details.priority += 1
-        const update = { $set: { data: details } };
-        const item = await ItemModel.updateOne({ _id: itemId }, update);
-        console.log("nn" + item);
 
+
+export const getItemsWithPriorityGreaterThanZero = async () => {
+    try {
+        const result = await ItemModel.find({ priority: { $gt: 0 } }) as any;
+        return result;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+};
+
+//Type any should be treated
+export const updatePriority = async (itemId: string, inceryBy:number) => {
+    try {
+        const update = { $set: { priority: inceryBy } };
+        const item = await ItemModel.updateOne({ _id: itemId }, update);
         return item
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+
+export const reductionPriorityInDB = async () => {
+    try {
+        const update = { $inc: { priority: -30 } };
+        const item = await ItemModel.updateMany(update);
+        return item;
     } catch (err) {
         console.error(err);
         throw err;

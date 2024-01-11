@@ -12,9 +12,11 @@ import cors from "cors";
 // import { getMessageFromKafka, kafka } from "./configurations/kafka";
 // import { connectToMongo } from "./configurations/mongo";
 import dotenv from "dotenv";
-import { getMessageFromKafka } from "./configuration/kafka";
+import { getMessageFromKafka } from "./kafka_getData";
 import { connectToMongo } from "./configuration/mongo";
 import { updatePriority } from "./dal";
+import { client } from "./configuration/redis";
+import { reductionPriority } from "./reductionPriority";
 
 
 dotenv.config();
@@ -54,11 +56,10 @@ async function startServer() {
     app.use("/graphql", express.json(), cors(), expressMiddleware(apolloServer));
 
     httpServer.listen(PORT, async () => {
-        // connectPostGres()
-        
+        await client.connect()
         await connectToMongo()
         getMessageFromKafka(["news"])
-        // updatePriority("659fe1b561cf389893b2852a", 5)
+        reductionPriority()
         console.log(`server is listening on port ${PORT}`);
     });
 }
