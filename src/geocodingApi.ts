@@ -11,7 +11,10 @@ export const getCoordinates = async (address: string) => {
         .then(data => {
             if (!data || data.length === 0 || !data[0] || address === "לא ידוע" ||
                 address === "צפון" || address === "דרום") {
-                return { name: "Unknown" };
+                return {
+                    name: "Unknown",
+                    coordinates: [0, 0]
+                };
             }
             return {
                 name: address,
@@ -19,7 +22,13 @@ export const getCoordinates = async (address: string) => {
             }
         }
         )
-        .catch(error => { return { name: "Unknown" } })
+        .catch(error => {
+            return {
+                name: "Unknown",
+                coordinates: [0, 0]
+            }
+        }
+        )
 
     return data
 }

@@ -1,10 +1,24 @@
 export const typeDefs = `
 type Query {
-   atmList: String
+  itemsNews:[ [ItemsNew]]
   }
-  type Atm {
-    id:String
-    address: String
+
+  type ItemsNew {
+    link: String
+      priority: Int
+      snippet: String
+      title: String
+      date: String
+      imageUrl: String
+      location: Location
+      source: String
+      topic: String
+  }
+
+  
+  type Location {
+      name: String
+      coordinates: [Int]
   }
 
   type Mutation{

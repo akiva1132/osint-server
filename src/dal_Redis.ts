@@ -27,3 +27,25 @@ export const updateRedis = async () => {
         throw error
     }
 }
+
+export const getItemsFromRedis = async () => {
+    try {
+        const newsItems = await getItemsWithPriorityGreaterThanZero();
+        const keys = await client.keys('*')
+
+        const values = await client.json.mGet(keys, '$');
+        console.log(values);
+        return values
+        
+        // for (let i = 0; i < keys.length; i++) {
+        //     const key = keys[i];
+        //     const value = JSON.parse(values[i]); // אני מניח שהערכים ב-Redis הם JSON
+
+        //     // כעת אתה יכול לעבוד עם המפתח key והערך value
+        //     console.log(`Key: ${key}, Value:`, value);
+        // }
+
+    } catch (error) {
+        throw error;
+    }
+}

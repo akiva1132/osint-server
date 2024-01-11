@@ -2,20 +2,20 @@ import { SchemaFieldTypes } from "redis";
 import { client } from "./redis";
 
 const schema = {
-  '$.country': {
+  '$.date': {
     type: SchemaFieldTypes.TEXT,
     SORTABLE: true,
-    AS: 'country'
+    AS: 'date'
   },
-  '$.area': {
+  '$.imageUrl': {
     type: SchemaFieldTypes.TEXT,
     SORTABLE: true,
-    AS: 'area'
+    AS: 'imageUrl'
   },
-  '$.rounds': {
+  '$.location': {
     type: SchemaFieldTypes.NUMERIC,
     SORTABLE: true,
-    AS: 'rounds'
+    AS: 'location'
   },
   '$.missileAmount': {
     type: SchemaFieldTypes.NUMERIC,

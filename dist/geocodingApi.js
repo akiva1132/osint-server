@@ -22,14 +22,22 @@ const getCoordinates = (address) => __awaiter(void 0, void 0, void 0, function* 
         .then(data => {
         if (!data || data.length === 0 || !data[0] || address === "לא ידוע" ||
             address === "צפון" || address === "דרום") {
-            return { name: "Unknown" };
+            return {
+                name: "Unknown",
+                coordinates: [0, 0]
+            };
         }
         return {
             name: address,
             coordinates: [data[0].lat, data[0].lon]
         };
     })
-        .catch(error => { return { name: "Unknown" }; });
+        .catch(error => {
+        return {
+            name: "Unknown",
+            coordinates: [0, 0]
+        };
+    });
     return data;
 });
 exports.getCoordinates = getCoordinates;

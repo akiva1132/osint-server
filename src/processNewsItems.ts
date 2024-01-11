@@ -1,7 +1,7 @@
 import { getFromDB, saveInDB, updatePriority } from "./dal";
 import { getAddress } from "./geminiApi";
 import { getCoordinates } from "./geocodingApi";
-import { updateRedis } from "./insertRedis";
+import { updateRedis } from "./dal_Redis";
 import { NewsItem } from "./types/types";
 
 

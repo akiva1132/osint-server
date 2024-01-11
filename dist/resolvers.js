@@ -11,14 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resolvers = exports.pubsub = void 0;
 const graphql_subscriptions_1 = require("graphql-subscriptions");
+const dal_Redis_1 = require("./dal_Redis");
 // import { getMessageFromKafka, producer } from "./configurations/kafka";
 exports.pubsub = new graphql_subscriptions_1.PubSub();
 exports.resolvers = {
     Query: {
-        atmList() {
+        itemsNews() {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
-                    return "list";
+                    const itemsNews = yield (0, dal_Redis_1.getItemsFromRedis)();
+                    return itemsNews;
                 }
                 catch (error) {
                     throw error;

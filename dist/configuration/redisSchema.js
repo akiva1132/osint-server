@@ -13,20 +13,20 @@ exports.connectToRedis = void 0;
 const redis_1 = require("redis");
 const redis_2 = require("./redis");
 const schema = {
-    '$.country': {
+    '$.date': {
         type: redis_1.SchemaFieldTypes.TEXT,
         SORTABLE: true,
-        AS: 'country'
+        AS: 'date'
     },
-    '$.area': {
+    '$.imageUrl': {
         type: redis_1.SchemaFieldTypes.TEXT,
         SORTABLE: true,
-        AS: 'area'
+        AS: 'imageUrl'
     },
-    '$.rounds': {
+    '$.location': {
         type: redis_1.SchemaFieldTypes.NUMERIC,
         SORTABLE: true,
-        AS: 'rounds'
+        AS: 'location'
     },
     '$.missileAmount': {
         type: redis_1.SchemaFieldTypes.NUMERIC,

@@ -13,7 +13,7 @@ exports.saveData = void 0;
 const dal_1 = require("./dal");
 const geminiApi_1 = require("./geminiApi");
 const geocodingApi_1 = require("./geocodingApi");
-const insertRedis_1 = require("./insertRedis");
+const dal_Redis_1 = require("./dal_Redis");
 const delay = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 };
@@ -35,6 +35,6 @@ const saveData = (newsItems) => __awaiter(void 0, void 0, void 0, function* () {
             yield (0, dal_1.saveInDB)(newsItem);
         }
     }
-    (0, insertRedis_1.updateRedis)();
+    (0, dal_Redis_1.updateRedis)();
 });
 exports.saveData = saveData;

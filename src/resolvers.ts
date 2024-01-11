@@ -1,4 +1,5 @@
 import { PubSub } from "graphql-subscriptions";
+import { getItemsFromRedis } from "./dal_Redis";
 // import { getMessageFromKafka, producer } from "./configurations/kafka";
 
 export const pubsub = new PubSub();
@@ -6,10 +7,10 @@ export const pubsub = new PubSub();
 
 export const resolvers = {
   Query:{
-    async atmList() {
+    async itemsNews() {
       try {
-        
-        return "list"
+        const itemsNews = await getItemsFromRedis()
+        return itemsNews
       }
       catch (error) {
         throw error
