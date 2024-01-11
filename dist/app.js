@@ -66,8 +66,9 @@ function startServer() {
         app.use("/graphql", express_1.default.json(), (0, cors_1.default)(), (0, express4_1.expressMiddleware)(apolloServer));
         httpServer.listen(PORT, () => __awaiter(this, void 0, void 0, function* () {
             // connectPostGres()
-            (0, mongo_1.connectToMongo)();
+            yield (0, mongo_1.connectToMongo)();
             (0, kafka_1.getMessageFromKafka)(["news"]);
+            // updatePriority("659fe1b561cf389893b2852a", 5)
             console.log(`server is listening on port ${PORT}`);
         }));
     });

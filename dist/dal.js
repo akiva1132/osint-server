@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateInDB = exports.getFromDB = exports.saveInDB = void 0;
+exports.updatePriority = exports.getFromDB = exports.saveInDB = void 0;
 const mongo_1 = require("./types/mongo");
 const saveInDB = (newsItem) => __awaiter(void 0, void 0, void 0, function* () {
     const newItem = new mongo_1.ItemModel(newsItem);
@@ -26,10 +26,13 @@ exports.saveInDB = saveInDB;
 const getFromDB = (topic) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield mongo_1.ItemModel.find({ topic: topic });
-        console.log(result);
-        if (result)
-            return result;
-        return false;
+        if (result[0] !== undefined) {
+            console.log(result);
+            return result[0];
+        }
+        else {
+            return false;
+        }
     }
     catch (err) {
         console.error(err);
@@ -37,9 +40,13 @@ const getFromDB = (topic) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getFromDB = getFromDB;
-const updateInDB = (itemId) => __awaiter(void 0, void 0, void 0, function* () {
+//Type any should be treated
+const updatePriority = (itemId, details) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const item = yield mongo_1.ItemModel.findById(itemId);
+        details.priority += 1;
+        const update = { $set: { data: details } };
+        const item = yield mongo_1.ItemModel.updateOne({ _id: itemId }, update);
+        console.log("nn" + item);
         return item;
     }
     catch (err) {
@@ -47,4 +54,4 @@ const updateInDB = (itemId) => __awaiter(void 0, void 0, void 0, function* () {
         throw err;
     }
 });
-exports.updateInDB = updateInDB;
+exports.updatePriority = updatePriority;

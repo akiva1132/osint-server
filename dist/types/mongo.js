@@ -33,7 +33,7 @@ const ItemSchema = new mongoose_1.Schema({
         date: { type: String, required: true },
         source: { type: String, required: true },
         imageUrl: { type: String, required: true },
-        priority: { type: Number, required: false },
+        priority: { type: Number, required: true },
         location: {
             name: { type: String, required: false },
             coordinates: { type: Array, required: false }

@@ -14,6 +14,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { getMessageFromKafka } from "./configuration/kafka";
 import { connectToMongo } from "./configuration/mongo";
+import { updatePriority } from "./dal";
 
 
 dotenv.config();
@@ -54,8 +55,10 @@ async function startServer() {
 
     httpServer.listen(PORT, async () => {
         // connectPostGres()
-        connectToMongo()
+        
+        await connectToMongo()
         getMessageFromKafka(["news"])
+        // updatePriority("659fe1b561cf389893b2852a", 5)
         console.log(`server is listening on port ${PORT}`);
     });
 }

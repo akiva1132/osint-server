@@ -17,6 +17,7 @@ const delay = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 };
 const saveData = (newsItems) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     for (const newsItem of newsItems) {
         if (typeof newsItem.data === 'string') {
             continue;
@@ -28,8 +29,8 @@ const saveData = (newsItems) => __awaiter(void 0, void 0, void 0, function* () {
         newsItem.data.priority = 1;
         const isExsist = yield (0, dal_1.getFromDB)(newsItem.topic);
         if (isExsist) {
-            // console.log("aaa" + isExsist._id);
-            // updateInDB(isExsist)
+            if (((_a = isExsist.data) === null || _a === void 0 ? void 0 : _a.priority) !== undefined)
+                yield (0, dal_1.updatePriority)(isExsist._id.toString(), isExsist.data);
         }
         else {
             yield (0, dal_1.saveInDB)(newsItem);

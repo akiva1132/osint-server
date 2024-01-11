@@ -1,4 +1,4 @@
-import { getFromDB, saveInDB } from "./dal";
+import { getFromDB, saveInDB, updatePriority } from "./dal";
 import { getAddress } from "./geminiApi";
 import { getCoordinates } from "./geocodingApi";
 import { Details, NewsItem } from "./types/types";
@@ -20,9 +20,8 @@ const delay = (milliseconds: number) => {
         newsItem.data.priority = 1
         const isExsist = await getFromDB(newsItem.topic)
         if (isExsist) {
-            // console.log("aaa" + isExsist._id);
-            
-            // updateInDB(isExsist)
+            if (isExsist.data?.priority !== undefined)
+            await updatePriority(isExsist._id.toString(), isExsist.data)
         }
         else{
             await saveInDB(newsItem)
