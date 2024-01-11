@@ -20,7 +20,8 @@ const getCoordinates = (address) => __awaiter(void 0, void 0, void 0, function* 
     const data = yield fetch(`https://geocode.maps.co/search?q=${address}&api_key=${GEOCODING_API}`)
         .then(result => result.json())
         .then(data => {
-        if (!data || data.length === 0 || !data[0]) {
+        if (!data || data.length === 0 || !data[0] || address === "לא ידוע" ||
+            address === "צפון" || address === "דרום") {
             return { name: "Unknown" };
         }
         return {
